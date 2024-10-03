@@ -19,6 +19,13 @@
     height: 100px;
     margin-right: 10px;
     margin-bottom: 10px;
+    font-weight: bold;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
 }
 .occupiedSeatItem{
     background: gray;
@@ -42,4 +49,19 @@
 }
 .visualizeLabelText{
     font-weight: bold;
+}
+.bordered-table{
+    width: 800px;
+}
+.tableOperations{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+}
+.tableOperation{
+    font-weight: bold;
+    text-decoration: underline red 2px;
+    cursor: pointer;
+    text-underline-position: under;
 }

@@ -1,15 +1,15 @@
 /*Q1. JS Variable needs to be created here. Below variable is just an example. Try to add more attributes.*/
 const initialTravellers = [
   {
-    id: 1, name: 'Jack', phone: 88885555,PassportID:"A1111",
+    id: 1, name: 'Jack', phone: 88885555,passportID:"A1111",
     bookingTime: new Date(),
   },
   {
-    id: 2, name: 'Rose', phone: 88884444,PassportID:"A1112",
+    id: 2, name: 'Rose', phone: 88884444,passportID:"A1112",
     bookingTime: new Date(),
   },
   {
-    id: 3, name: 'Ocean', phone: 88884444,PassportID:"A1112",
+    id: 3, name: 'Ocean', phone: 88884444,passportID:"A1112",
     bookingTime: new Date(),
   },
 ];
@@ -24,29 +24,51 @@ function TravellerRow(props) {
   );
 }
 
-function Display(props) {
+class Display extends React.Component {
   
 	/*Q3. Write code to render rows of table, reach corresponding to one traveller. Make use of the TravellerRow function that draws one row.*/
+  constructor(props) {
+    super(props);
+  }
+  render(){
+    return (
+        <div>
+          <h2>Display Page</h2>
+          <table className="bordered-table">
+            <thead>
+            <tr>
+              {/*Q3. Below table is just an example. Add more columns based on the traveller attributes you choose.*/}
+              <th>ID</th>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Passport ID</th>
+              <th>Booking Time</th>
+              <th>Operations</th>
+            </tr>
+            </thead>
+            <tbody>
+            {/*Q3. write code to call the JS variable defined at the top of this function to render table rows.*/}
+            {this.props.travellers.map((item,key)=>{
+              return (
+                  <tr key={key}>
+                    <td>{item.id}</td>
+                    <td>{item.name}</td>
+                    <td>{item.phone}</td>
+                    <td>{item.passportID}</td>
+                    <td>{item.bookingTime.toLocaleDateString()}</td>
+                    <td className="tableOperations">
+                      <a className="tableOperation">Delete</a>
+                    </td>
+                  </tr>
 
-  return (
-      <div>
-        <h2>Display Page</h2>
-    <table className="bordered-table">
-      <thead>
-        <tr>
-	  {/*Q3. Below table is just an example. Add more columns based on the traveller attributes you choose.*/}
-          <th>ID</th>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Booking Time</th>
-        </tr>
-      </thead>
-      <tbody>
-        {/*Q3. write code to call the JS variable defined at the top of this function to render table rows.*/}
-      </tbody>
-    </table>
-      </div>
-  );
+              )
+            })}
+            </tbody>
+          </table>
+        </div>
+    );
+  }
+
 }
 
 class Add extends React.Component {
@@ -74,22 +96,27 @@ class Add extends React.Component {
 
 
 class Delete extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.state = {nameInput:""}
   }
   handleSubmit(e) {
     e.preventDefault();
     /*Q5. Fetch the passenger details from the deletion form and call deleteTraveller()*/
+    this.props.deleteTraveller(this.state.nameInput);
   }
-
+  handleChange(e) {
+    this.setState({nameInput: e.target.value});
+  }
   render() {
     return (
         <div>
           <h2>Delete Page</h2>
       <form name="deleteTraveller" onSubmit={this.handleSubmit}>
 	    {/*Q5. Placeholder form to enter information on which passenger's ticket needs to be deleted. Below code is just an example.*/}
-	<input type="text" name="travellername" placeholder="Name" />
+	<input onChange={this.handleChange} value={this.state.nameInput} type="text" name="travellername" placeholder="Name" />
         <button>Delete</button>
       </form>
         </div>
@@ -125,9 +152,9 @@ class Homepage extends React.Component {
             {
               Array.from({length: this.props.totalSeatsNum}, (_, index) => {
                 if (index < this.props.travellers.length) {
-                  return <a key={index} className={"seatItem occupiedSeatItem"}></a>
+                  return <a key={index} className={"seatItem occupiedSeatItem"}>{index+1}</a>
                 } else {
-                  return <a key={index} className={"seatItem"}></a>
+                  return <a key={index} className={"seatItem"}>{index+1}</a>
 
                 }
               })
@@ -140,7 +167,7 @@ class Homepage extends React.Component {
 class TicketToRide extends React.Component {
   constructor() {
     super();
-    this.state = { travellers: [], selector: 0,totalSeatsNum:0};
+    this.state = { travellers: [], selector: 2,totalSeatsNum:0};
     this.bookTraveller = this.bookTraveller.bind(this);
     this.deleteTraveller = this.deleteTraveller.bind(this);
   }
@@ -165,6 +192,7 @@ class TicketToRide extends React.Component {
   }
 
   deleteTraveller(passenger) {
+    console.log(passenger)
 	  /*Q5. Write code to delete a passenger from the traveller state variable.*/
   }
   render() {
@@ -185,8 +213,8 @@ class TicketToRide extends React.Component {
 		{/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
       {this.state.selector===0?<Homepage travellers={this.state.travellers} totalSeatsNum={this.state.totalSeatsNum}></Homepage>:null}
       {this.state.selector===1?<Add></Add>:null}
-      {this.state.selector===2?<Delete></Delete>:null}
-      {this.state.selector===3?<Display></Display>:null}
+      {this.state.selector===2?<Delete deleteTraveller={this.deleteTraveller}></Delete>:null}
+      {this.state.selector===3?<Display travellers={this.state.travellers}></Display>:null}
 		{/*Q3. Code to call component that Displays Travellers.*/}
 		
 		{/*Q4. Code to call the component that adds a traveller.*/}
