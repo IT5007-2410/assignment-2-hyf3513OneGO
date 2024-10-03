@@ -1,0 +1,45 @@
+.tabItems{
+    margin-right: 50px;
+    text-decoration: underline black 5px;
+    cursor: pointer;
+    text-underline-position: under;
+}
+.selectedTab{
+    text-decoration: underline green 4px;
+}
+.visualizeSeats{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding:20px;
+}
+.seatItem{
+    background: green;
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+.occupiedSeatItem{
+    background: gray;
+}
+.visualizeLabels{
+    display: flex;
+    flex-direction: row;
+    width: 300px;
+    justify-content: space-between;
+    padding-left: 20px;
+}
+.visualizeLabel{
+
+}
+.visualizeIcon{
+    width: 12px;
+    height: 12px;
+    background: green;
+    display: inline-block;
+    margin-right: 2px;
+}
+.visualizeLabelText{
+    font-weight: bold;
+}
