@@ -1,11 +1,11 @@
 /*Q1. JS Variable needs to be created here. Below variable is just an example. Try to add more attributes.*/
 const initialTravellers = [
   {
-    id: 1, name: 'Jack', phone: 88885555,
+    id: 1, name: 'Jack', phone: 88885555,PassportID:"A1111",
     bookingTime: new Date(),
   },
   {
-    id: 2, name: 'Rose', phone: 88884444,
+    id: 2, name: 'Rose', phone: 88884444,PassportID:"A1112",
     bookingTime: new Date(),
   },
 ];
@@ -130,6 +130,7 @@ class TicketToRide extends React.Component {
     return (
       <div>
         <h1>Ticket To Ride</h1>
+        <h2>hello</h2>
 	<div>
 	    {/*Q2. Code for Navigation bar. Use basic buttons to create a nav bar. Use states to manage selection.*/}
 	</div>
