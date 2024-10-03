@@ -57,7 +57,7 @@ class Display extends React.Component {
                     <td>{item.passportID}</td>
                     <td>{item.bookingTime.toLocaleDateString()}</td>
                     <td className="tableOperations">
-                      <a className="tableOperation">Delete</a>
+                      <a className="tableOperation" onClick={()=>{this.props.deleteTraveller(item.name)}}>Delete</a>
                     </td>
                   </tr>
 
@@ -100,12 +100,18 @@ class Delete extends React.Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.state = {nameInput:""}
+    this.state = {nameInput:"",msg:""}
   }
   handleSubmit(e) {
     e.preventDefault();
     /*Q5. Fetch the passenger details from the deletion form and call deleteTraveller()*/
-    this.props.deleteTraveller(this.state.nameInput);
+    let {flag,errorMsg} = this.props.deleteTraveller(this.state.nameInput)
+    if(flag){
+      this.setState({"msg":`Delete Traveller:${this.state.nameInput} OK!`});
+    }else{
+      this.setState({"msg":`Delete Traveller:${this.state.nameInput} Failed! ErrorMsg: ${errorMsg}`});
+
+    }
   }
   handleChange(e) {
     this.setState({nameInput: e.target.value});
@@ -116,9 +122,10 @@ class Delete extends React.Component {
           <h2>Delete Page</h2>
       <form name="deleteTraveller" onSubmit={this.handleSubmit}>
 	    {/*Q5. Placeholder form to enter information on which passenger's ticket needs to be deleted. Below code is just an example.*/}
-	<input onChange={this.handleChange} value={this.state.nameInput} type="text" name="travellername" placeholder="Name" />
-        <button>Delete</button>
+        <input onChange={this.handleChange} value={this.state.nameInput} type="text" name="travellername" placeholder="Name" />
+            <button>Delete</button>
       </form>
+          {this.state.msg?<a>{this.state.msg}</a>:null}
         </div>
     );
   }
@@ -167,7 +174,7 @@ class Homepage extends React.Component {
 class TicketToRide extends React.Component {
   constructor() {
     super();
-    this.state = { travellers: [], selector: 2,totalSeatsNum:0};
+    this.state = { travellers: [], selector: 3,totalSeatsNum:0};
     this.bookTraveller = this.bookTraveller.bind(this);
     this.deleteTraveller = this.deleteTraveller.bind(this);
   }
@@ -192,7 +199,22 @@ class TicketToRide extends React.Component {
   }
 
   deleteTraveller(passenger) {
-    console.log(passenger)
+    let newTravellers = []
+    let flag=false
+    let errorMsg = ""
+    this.state.travellers.map((item)=>{
+      if (passenger!==item.name){
+        newTravellers.push(item)
+      }else{
+        flag=true
+      }
+    })
+    if(flag){
+      this.setState({travellers: newTravellers});
+    }else{
+     errorMsg = "InvalidUserName"
+    }
+    return {flag , errorMsg}
 	  /*Q5. Write code to delete a passenger from the traveller state variable.*/
   }
   render() {
@@ -213,8 +235,8 @@ class TicketToRide extends React.Component {
 		{/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
       {this.state.selector===0?<Homepage travellers={this.state.travellers} totalSeatsNum={this.state.totalSeatsNum}></Homepage>:null}
       {this.state.selector===1?<Add></Add>:null}
-      {this.state.selector===2?<Delete deleteTraveller={this.deleteTraveller}></Delete>:null}
-      {this.state.selector===3?<Display travellers={this.state.travellers}></Display>:null}
+      {this.state.selector===2?<Delete deleteTraveller={this.deleteTraveller} travellers={this.state.travellers}></Delete>:null}
+      {this.state.selector===3?<Display travellers={this.state.travellers} deleteTraveller={this.deleteTraveller}></Display>:null}
 		{/*Q3. Code to call component that Displays Travellers.*/}
 		
 		{/*Q4. Code to call the component that adds a traveller.*/}
