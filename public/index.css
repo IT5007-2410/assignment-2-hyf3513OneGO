@@ -65,3 +65,6 @@
     cursor: pointer;
     text-underline-position: under;
 }
+.formLabel{
+    font-weight: bold;
+}
